@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="VersionBuilder.post" default="go">
+	<target name="go">
+		<delete file="InstallerVersion.nsh" failonerror="false" />
+		
+		<echo file="..\InstallerVersion.nsh"
+			message='VIProductVersion "${version.major}.${version.minor}.${version.patch}.${version.revision}"' />
+		<echo file="..\InstallerVersion.nsh"
+			append="true"
+			message='VIAddVersionKey "ProductVersion" "${version.major}.${version.minor}.${version.patch}.0"' />
+		<echo file="..\InstallerVersion.nsh"
+			append="true"
+			message='VIAddVersionKey "FileVersion" "${version.major}.${version.minor}.${version.build}.${version.revision}"' />
+		<echo file="..\InstallerVersion.nsh"
+			append="true"
+			message='!define EFT_Use_Installer_Versioning' />
+	</target>
+</project>

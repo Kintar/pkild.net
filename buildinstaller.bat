@@ -1,0 +1,1 @@
+%4lib\NAnt\NAnt.exe -f:%4eft.installers.build -D:build.configuration=%1 -D:build.project_name=%2 -D:build.project_dir=%3 -D:build.solution_dir=%4 -D:build.bin_dir=%5

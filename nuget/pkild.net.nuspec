@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <metadata>
+    <id>pkild.net</id>
+    <version>DO_NOT_EDIT</version>
+    <authors>Alec Lanter</authors>
+    <owners>Alec Lanter</owners>
+    <summary>A .NET interface to the pkild PKI server</summary>
+    <description>A .NET interface to the pkild PKI server</description>
+    <!--<projectUrl>__REPLACE__</projectUrl>
+    <licenseUrl>__REPLACE__</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>space delimited</tags>
+    <iconUrl>32x32.png</iconUrl>
+    <dependencies>
+      <dependency id="something" version="1.0.0.0" />
+    </dependencies>-->
+  </metadata>
+</package>

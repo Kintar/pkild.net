@@ -1,0 +1,14 @@
+.svn
+build_output
+code_drop
+lastAPI
+lastGems
+lastNuGet
+packages
+InstallerVersion.nsh
+*.cache
+*.suo
+SolutionVersion.cs
+bin/
+obj/
+

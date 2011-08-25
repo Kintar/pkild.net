@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project name="CUSTOM REPLACE NCOVER" default="go">
+  <target name="go" depends="run_tasks" />
+  <target name="run_tasks">
+    <!-- We're just taking ncover out of the build -->
+  </target>
+</project>
