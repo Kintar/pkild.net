@@ -5,10 +5,11 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Web;
+using System.Runtime.InteropServices;
 
 namespace pkild.net
 {
-    public class PkildClient
+    public class PkildClient : IPkiClient
     {
         public Uri BaseUri { get; protected set; }
         public CertificateState CertificateState { get; protected set; }
@@ -53,8 +54,10 @@ namespace pkild.net
         public byte[] CreateCertificate(String password)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(BaseUri);
+
             String parameters = String.Format("password={0}&confirm_password={0}&submit=create&action_type=pkcs12_cert",
                 HttpUtility.UrlEncode(password));
+
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
             request.Headers[HttpRequestHeader.Cookie] = "pkild_session=" + Session.SessionID;
@@ -101,7 +104,7 @@ namespace pkild.net
             }
         }
 
-        public void RevokeCertificate()
+        public bool RevokeCertificate()
         {
             if (CertificateState != CertificateState.Present)
                 throw new Exception("Can't revoke a missinr or already revoked certificate");
@@ -131,9 +134,10 @@ namespace pkild.net
             }
 
             FetchCertificateState();
+            return CertificateState == CertificateState.Revoked;
         }
 
-        public void RemoveCertificate()
+        public bool RemoveCertificate()
         {
             if (CertificateState != CertificateState.Revoked)
                 throw new Exception("Can't remove a non-revoked certificate");
@@ -157,6 +161,7 @@ namespace pkild.net
 
             certRevokeNode = null;
             FetchCertificateState();
+            return CertificateState == CertificateState.Missing;
         }
 
         /// <summary>

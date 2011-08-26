@@ -44,6 +44,7 @@
       <Link>SolutionVersion.cs</Link>
     </Compile>
     <Compile Include="CertificateState.cs" />
+    <Compile Include="IPkiClient.cs" />
     <Compile Include="PkildClient.cs" />
     <Compile Include="PkildSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
