@@ -6,6 +6,8 @@ using System.Net;
 using System.IO;
 using System.Web;
 using System.Runtime.InteropServices;
+using System.Security;
+using pkild.net.unsafecode;
 
 namespace pkild.net
 {
@@ -38,7 +40,7 @@ namespace pkild.net
 
         public PkildClient(String baseUri) : this(new Uri(baseUri)) { }
 
-        public void Login(String user, String password)
+        public void Login(String user, SecureString password)
         {
             Session = Login_Internal(user, password);
             IsLoggedIn = true;
@@ -51,12 +53,9 @@ namespace pkild.net
             IsLoggedIn = false;
         }
 
-        public byte[] CreateCertificate(String password)
+        public byte[] CreateCertificate(SecureString password)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(BaseUri);
-
-            String parameters = String.Format("password={0}&confirm_password={0}&submit=create&action_type=pkcs12_cert",
-                HttpUtility.UrlEncode(password));
 
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
@@ -64,8 +63,12 @@ namespace pkild.net
             using (Stream reqStream = request.GetRequestStream())
             using (StreamWriter writer = new StreamWriter(reqStream))
             {
+                String parameters = String.Format("password={0}&confirm_password={0}&submit=create&action_type=pkcs12_cert",
+                    HttpUtility.UrlEncode(password.ConvertToUnsecureString()));
                 writer.Write(parameters);
+                parameters.Zero();
             }
+
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {
                 if (response.StatusCode != HttpStatusCode.OK)
@@ -170,20 +173,24 @@ namespace pkild.net
         /// <param name="user"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        private PkildSession Login_Internal(String user, String password)
+        private PkildSession Login_Internal(String user, SecureString password)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(BaseUri);
             request.Method = "POST";
 
-            String requestData = String.Format(
-                "username={0}&password={1}&login=Submit", HttpUtility.UrlEncode(user, Encoding.UTF8), HttpUtility.UrlEncode(password));
             request.ContentType = "application/x-www-form-urlencoded";
             request.Headers[HttpRequestHeader.Cookie] = "pkild_session=" + Session.SessionID;
             using (Stream reqStream = request.GetRequestStream())
             using (StreamWriter writer = new StreamWriter(reqStream))
             {
+                String requestData = String.Format(
+                    "username={0}&password={1}&login=Submit",
+                    HttpUtility.UrlEncode(user, Encoding.UTF8),
+                    HttpUtility.UrlEncode(password.ConvertToUnsecureString(), Encoding.UTF8));
                 writer.Write(requestData);
+                requestData.Zero();
             }
+
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {
                 if (response.StatusCode != HttpStatusCode.OK)
