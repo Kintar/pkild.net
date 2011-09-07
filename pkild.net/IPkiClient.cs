@@ -8,6 +8,10 @@ namespace pkild.net
 {
     public interface IPkiClient
     {
+        CertificateState CertificateState { get; }
+
+        bool IsLoggedIn { get; }
+
         byte[] CreateCertificate(SecureString password);
 
         bool RevokeCertificate();
